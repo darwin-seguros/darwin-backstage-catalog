@@ -158,7 +158,7 @@ kubectl describe pod -n darwin-infra-backoffice | grep "Port:"
 2. GitHub Actions: `git clone helm-apps && sed image.tag → commit → push`
 3. ArgoCD: detecta mudança no helm-apps → sync automático → rolling update
 
-**Pré-requisito:** secret `GH_HELM_APPS_PAT` configurado nos repos (Fine-grained PAT com `Contents: write` no `helm-apps`).
+**Sem secrets adicionais** — usa o OIDC AWS já configurado para fazer `kubectl rollout restart` após o push no ECR.
 
 ### 5.2 Validar último run
 
@@ -311,7 +311,7 @@ Secret: `darwin-bot/shared` — Chaves esperadas:
 
 | Item | Detalhe | Responsável |
 |---|---|---|
-| `GH_HELM_APPS_PAT` | Fine-grained PAT com `Contents: write` no helm-apps; setar como secret nos repos darwin-bot e darwin-infra-backoffice | DevOps |
+| Bot instalado no Teams | O bot precisa estar instalado em pelo menos um canal para testes de envio | DevOps |
 | Backstage build — validar | Verificar que o build do Backstage completou com sucesso após commit do Dockerfile fix | QA |
 | Registrar catalog no Backstage | Executar o registro da URL do darwin-backstage-catalog no portal | DevOps |
 | Validar `platonico:send-message` end-to-end | Executar template e confirmar mensagem no Teams e no histórico do bot | QA |
