@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: darwin-infra-backoffice
+  title: Darwin Infra Backoffice
+  description: Portal de gerenciamento do Platônico — envio de mensagens Teams, histórico de comunicações, gestão de canais & grupos, templates Backstage e FinOps. SPA com autenticação Azure AD (MSAL PKCE).
+  annotations:
+    github.com/project-slug: darwin-seguros/darwin-infra-backoffice
+  tags:
+    - frontend
+    - spa
+    - react
+    - backoffice
+    - platform
+  links:
+    - url: https://infra-backoffice.shared.cloud.darwinseguros.com
+      title: Portal
+      icon: web
+    - url: https://github.com/darwin-seguros/darwin-infra-backoffice
+      title: Repositório
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: group:platform-team
+  system: infra-platform
+  consumesApis:
+    - platonico-rest-api

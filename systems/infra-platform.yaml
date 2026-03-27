@@ -1,0 +1,22 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: platform
+  title: Platform
+  description: Domínio de plataforma — infraestrutura, developer experience e automações internas.
+spec:
+  owner: group:platform-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: infra-platform
+  title: Infra Platform
+  description: Sistema de infraestrutura Darwin — bot de comunicações Teams, portal de gerenciamento e developer portal.
+  tags:
+    - platform
+    - infra
+spec:
+  owner: group:platform-team
+  domain: platform

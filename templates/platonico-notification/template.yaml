@@ -1,0 +1,66 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: platonico-send-message
+  title: "Platônico: Enviar mensagem no Teams"
+  description: Envia uma mensagem para canais ou grupos do Microsoft Teams via o bot Platônico. Use como passo standalone ou como etapa de notificação em outros templates.
+  tags:
+    - platonico
+    - teams
+    - notification
+    - platform
+spec:
+  owner: platform-team
+  type: notification
+
+  parameters:
+    - title: Destinos
+      description: Selecione para quais canais ou grupos enviar
+      required:
+        - targets
+      properties:
+        targets:
+          title: IDs dos targets
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: |
+            IDs dos targets cadastrados no Platônico.
+            Consulte a lista em: https://infra-backoffice.shared.cloud.darwinseguros.com/targets
+          ui:options:
+            addable: true
+            removable: true
+          ui:help: "Cada item é um UUID do target. Ex: a1b2c3d4-..."
+
+    - title: Mensagem
+      required:
+        - text
+      properties:
+        text:
+          title: Texto
+          type: string
+          description: Conteúdo da mensagem a ser enviada no Teams
+          ui:widget: textarea
+          ui:options:
+            rows: 5
+        sentBy:
+          title: Remetente (opcional)
+          type: string
+          description: Identificador exibido no histórico como remetente da mensagem
+          default: backstage-scaffolder
+
+  steps:
+    - id: send
+      name: Enviar via Platônico
+      action: platonico:send-message
+      input:
+        targets: ${{ parameters.targets }}
+        text: ${{ parameters.text }}
+        sentBy: ${{ parameters.sentBy }}
+
+  output:
+    text:
+      - title: Resultado
+        content: |
+          Mensagem enviada pelo Platônico para ${{ parameters.targets | length }} target(s).

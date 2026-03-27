@@ -1,0 +1,17 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: platform-team
+  title: Platform Team
+  description: Time de Engenharia de Plataforma — responsável por infra, developer experience e automações.
+  links:
+    - url: https://darwin-seguros.atlassian.net/jira/software/c/projects/DEVK/boards/16
+      title: Board DEVK
+      icon: dashboard
+spec:
+  type: team
+  profile:
+    displayName: Platform Team
+    email: plataforma@darwinseguros.com
+  children: []

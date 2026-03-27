@@ -1,0 +1,174 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: platonico
+  title: Platônico
+  description: Bot de comunicações via Microsoft Teams. Envia mensagens para canais e grupos, mantém histórico e expõe API REST consumida pelo Infra Backoffice e Backstage Scaffolder.
+  annotations:
+    github.com/project-slug: darwin-seguros/darwin-bot
+    backstage.io/techdocs-ref: url:https://github.com/darwin-seguros/darwin-bot/blob/main/
+  tags:
+    - bot
+    - teams
+    - notifications
+    - nodejs
+    - platform
+  links:
+    - url: https://bot.shared.cloud.darwinseguros.com/api/health
+      title: Health
+      icon: dashboard
+    - url: https://infra-backoffice.shared.cloud.darwinseguros.com
+      title: Infra Backoffice
+      icon: web
+    - url: https://github.com/darwin-seguros/darwin-bot
+      title: Repositório
+      icon: github
+spec:
+  type: service
+  lifecycle: production
+  owner: group:platform-team
+  system: infra-platform
+  providesApis:
+    - platonico-rest-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: platonico-rest-api
+  title: Platônico REST API
+  description: API REST do bot Platônico — envio de mensagens Teams, histórico, targets e execução de templates Backstage.
+  annotations:
+    github.com/project-slug: darwin-seguros/darwin-bot
+spec:
+  type: openapi
+  lifecycle: production
+  owner: group:platform-team
+  system: infra-platform
+  definition: |
+    openapi: "3.0.0"
+    info:
+      title: Platônico REST API
+      version: "1.0.0"
+      description: API REST do bot Platônico
+    servers:
+      - url: https://bot.shared.cloud.darwinseguros.com
+    security:
+      - BearerAuth: []
+    components:
+      securitySchemes:
+        BearerAuth:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT (Azure AD)
+    paths:
+      /api/health:
+        get:
+          summary: Health check
+          security: []
+          responses:
+            "200":
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      service:
+                        type: string
+      /api/messages/send:
+        post:
+          summary: Enviar mensagem para canais/grupos Teams
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required: [targets, text]
+                  properties:
+                    targets:
+                      type: array
+                      items:
+                        type: string
+                      description: IDs dos targets cadastrados
+                    text:
+                      type: string
+                      maxLength: 10000
+                    card:
+                      type: object
+                      description: Adaptive Card payload (opcional)
+          responses:
+            "200":
+              description: Mensagem enviada para todos os targets
+            "207":
+              description: Envio parcial — alguns targets falharam
+      /api/messages/history:
+        get:
+          summary: Histórico de mensagens
+          parameters:
+            - name: limit
+              in: query
+              schema:
+                type: integer
+                default: 50
+            - name: offset
+              in: query
+              schema:
+                type: integer
+                default: 0
+            - name: target_id
+              in: query
+              schema:
+                type: string
+          responses:
+            "200":
+              description: Lista de mensagens paginada
+      /api/targets:
+        get:
+          summary: Listar targets Teams (canais, grupos, pessoal)
+          parameters:
+            - name: type
+              in: query
+              schema:
+                type: string
+                enum: [channel, group, personal]
+          responses:
+            "200":
+              description: Lista de targets
+      /api/templates:
+        get:
+          summary: Listar templates do Backstage Scaffolder disponíveis
+          responses:
+            "200":
+              description: Lista de templates
+      /api/templates/trigger:
+        post:
+          summary: Disparar execução de template Backstage
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required: [templateName, values]
+                  properties:
+                    templateName:
+                      type: string
+                    namespace:
+                      type: string
+                      default: default
+                    values:
+                      type: object
+          responses:
+            "201":
+              description: Task de template iniciada
+      /api/bot/install-info:
+        get:
+          summary: Informações de instalação do bot no Teams
+          security: []
+          responses:
+            "200":
+              description: Deep link e Teams App ID

@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: darwin-backstage
+  title: Darwin Backstage
+  description: Developer Portal da Darwin Seguros — catálogo de software, templates Scaffolder, documentação técnica e integrações com Azure AD / Microsoft Graph.
+  annotations:
+    github.com/project-slug: darwin-seguros/darwin-backstage
+  tags:
+    - platform
+    - developer-portal
+    - backstage
+  links:
+    - url: https://backstage.production.cloud.darwinseguros.com
+      title: Portal
+      icon: web
+    - url: https://github.com/darwin-seguros/darwin-backstage
+      title: Repositório
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: group:platform-team
+  system: infra-platform

@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: darwin-backstage-catalog
+  description: Root location — Software Catalog centralizado da Darwin Seguros
+spec:
+  targets:
+    # Organização
+    - ./org/groups.yaml
+
+    # Sistemas
+    - ./systems/infra-platform.yaml
+
+    # Componentes
+    - ./components/platonico/catalog-info.yaml
+    - ./components/darwin-infra-backoffice/catalog-info.yaml
+    - ./components/darwin-backstage/catalog-info.yaml
+
+    # Templates Scaffolder
+    - ./templates/platonico-notification/template.yaml
