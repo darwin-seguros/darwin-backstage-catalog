@@ -22,7 +22,7 @@ metadata:
 spec:
   type: website
   lifecycle: production
-  owner: group:platform-team
+  owner: group:default/squad-devops
   system: infra-platform
   consumesApis:
     - platonico-rest-api

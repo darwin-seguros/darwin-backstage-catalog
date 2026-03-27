@@ -1,3 +1,13 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: platform
+  title: Platform
+  description: Domínio de plataforma — infraestrutura, developer experience e automações internas.
+spec:
+  owner: group:default/squad-devops
+---
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
@@ -8,4 +18,5 @@ metadata:
     - platform
     - infra
 spec:
-  owner: group:platform-team
+  owner: group:default/squad-devops
+  domain: platform

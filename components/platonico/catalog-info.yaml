@@ -27,7 +27,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: group:platform-team
+  owner: group:default/squad-devops
   system: infra-platform
   providesApis:
     - platonico-rest-api
@@ -43,7 +43,7 @@ metadata:
 spec:
   type: openapi
   lifecycle: production
-  owner: group:platform-team
+  owner: group:default/squad-devops
   system: infra-platform
   definition: |
     openapi: "3.0.0"

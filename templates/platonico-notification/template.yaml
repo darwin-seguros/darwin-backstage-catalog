@@ -10,7 +10,7 @@ metadata:
     - notification
     - platform
 spec:
-  owner: platform-team
+  owner: group:default/squad-devops
   type: notification
 
   parameters:
